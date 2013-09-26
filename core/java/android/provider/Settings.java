@@ -3554,6 +3554,11 @@ public final class Settings {
          */
         public static final String LIVE_DISPLAY_HINTED = "live_display_hinted";
 
+	    /** Network speed indicator
+         * @hide
+         */
+        public static final String STATUS_BAR_TRAFFIC = "status_bar_traffic";
+
         /**
          * ListView Animations
          * 0 == None
