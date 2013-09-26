@@ -3522,6 +3522,11 @@ public final class Settings {
          */
         public static final String RECENTS_USE_OMNISWITCH = "recents_use_omniswitch";
 
+	    /** Network speed indicator
+         * @hide
+         */
+        public static final String STATUS_BAR_TRAFFIC = "status_bar_traffic";
+
         /**
          * ListView Animations
          * 0 == None
