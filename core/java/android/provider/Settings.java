@@ -3559,9 +3559,19 @@ public final class Settings {
         public static final String STATUSBAR_CLOCK_COLOR = "statusbar_clock_color";
         
         /**
-         * Show/hide network speed indicator
+         * Settings for clock font style
          * @hide
          */
+        public static final String STATUSBAR_CLOCK_FONT_STYLE = "statusbar_clock_font_style";
+
+        /**
+         * Wether to show network speed indicators
+         * 0: download
+         * 1: upload
+         * 2: download and upload
+         * default: 2
+         * @hide
+         */   
         public static final String STATUS_BAR_ENABLE_NETWORK_SPEED_INDICATOR = "status_bar_enable_network_speed_indicator";
 
         /**
