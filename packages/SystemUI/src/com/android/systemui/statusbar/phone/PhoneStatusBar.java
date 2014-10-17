@@ -71,6 +71,7 @@ import android.media.session.MediaController;
 import android.media.session.MediaSession;
 import android.media.session.MediaSessionManager;
 import android.media.session.PlaybackState;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -431,6 +432,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     Settings.System.STATUS_BAR_CLOCK), false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.NAVBAR_LEFT_IN_LANDSCAPE), false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_TICKER_ENABLED),
+                    false, this, UserHandle.USER_ALL);
             update();
         }
 
@@ -439,6 +443,20 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             super.unobserve();
             ContentResolver resolver = mContext.getContentResolver();
             resolver.unregisterContentObserver(this);
+        }
+        
+        @Override
+        public void onChange(boolean selfChange, Uri uri) {
+             if (uri.equals(Settings.System.getUriFor(
+                       Settings.System.STATUS_BAR_TICKER_ENABLED))) {
+                       mTickerEnabled = Settings.System.getIntForUser(
+                             mContext.getContentResolver(),
+                             Settings.System.STATUS_BAR_TICKER_ENABLED,
+                             mContext.getResources().getBoolean(R.bool.enable_ticker)
+                          ? 1 : 0, UserHandle.USER_CURRENT) == 1;
+                  initTickerView();
+            }
+            update();
         }
 
         @Override
@@ -534,8 +552,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         @Override
         protected void observe() {
             super.observe();
-            ContentResolver resolver = mContext.getContentResolver();
-            resolver.registerContentObserver(Settings.Secure.getUriFor(
+            ContentResolver resolver = mContext.getContentResolver();            
+           resolver.registerContentObserver(Settings.Secure.getUriFor(
                     Settings.Secure.DEV_FORCE_SHOW_NAVBAR), false, this, UserHandle.USER_ALL);
         }
 
@@ -561,7 +579,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         // If we have no Navbar view and we should have one, create it
         if (mNavigationBarView != null) {
             return;
-        }
+       }
 
         mNavigationBarView =
                 (NavigationBarView) View.inflate(mContext, R.layout.navigation_bar, null);
@@ -1029,17 +1047,11 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                         R.id.keyguard_indication_text));
         mKeyguardBottomArea.setKeyguardIndicationController(mKeyguardIndicationController);
 
-        mTickerEnabled = res.getBoolean(R.bool.enable_ticker);
-        if (mTickerEnabled) {
-            final ViewStub tickerStub = (ViewStub) mStatusBarView.findViewById(R.id.ticker_stub);
-            if (tickerStub != null) {
-                mTickerView = tickerStub.inflate();
-                mTicker = new MyTicker(context, mStatusBarView);
-
-                TickerView tickerView = (TickerView) mStatusBarView.findViewById(R.id.tickerText);
-                tickerView.mTicker = mTicker;
-            }
-        }
+        mTickerEnabled = Settings.System.getIntForUser(mContext.getContentResolver(),
+                    Settings.System.STATUS_BAR_TICKER_ENABLED,
+                    mContext.getResources().getBoolean(R.bool.enable_ticker)
+                            ? 1 : 0, UserHandle.USER_CURRENT) == 1;
+        initTickerView();
 
         mEdgeBorder = res.getDimensionPixelSize(R.dimen.status_bar_edge_ignore);
 
@@ -1352,7 +1364,22 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     public StatusBarWindowView getStatusBarWindow() {
         return mStatusBarWindow;
     }
+    
+    private void initTickerView() {
+        if (mTickerEnabled && (mTicker == null || mTickerView == null)) {
+            final ViewStub tickerStub = (ViewStub) mStatusBarView.findViewById(R.id.ticker_stub);
+        if (tickerStub != null) {
+            mTickerView = tickerStub.inflate();
+            mTicker = new MyTicker(mContext, mStatusBarView);
 
+            TickerView tickerView = (TickerView) mStatusBarView.findViewById(R.id.tickerText);
+            tickerView.mTicker = mTicker;
+      } else {
+           mTickerEnabled = false;
+          }
+       }
+    }
+  
     @Override
     protected WindowManager.LayoutParams getSearchLayoutParams(LayoutParams layoutParams) {
         boolean opaque = false;
