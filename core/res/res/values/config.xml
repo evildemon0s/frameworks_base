@@ -2205,6 +2205,9 @@
     <!-- Show the next-alarm as a zen exit condition if it occurs in the next n hours. -->
     <integer name="config_next_alarm_condition_lookahead_threshold_hrs">12</integer>
 
+    <!-- Setting to false will disable CM's IME switcher implementation for tablets -->
+    <bool name="config_show_cmIMESwitcher">true</bool>
+
     <!-- Show downtime as a zen exit condition if it starts in the next n hours. -->
     <integer name="config_downtime_condition_lookahead_threshold_hrs">4</integer>
 
@@ -2255,9 +2258,6 @@
     <!-- Timeout in MS for how long you have to long-press the back key to
          kill the foreground app. -->
     <integer name="config_backKillTimeout">2000</integer>
-
-    <!-- Setting to false will disable CM's IME switcher implementation for tablets -->
-    <bool name="config_show_cmIMESwitcher">true</bool>
 
     <!-- Support for disabling to fetch APN from OMH card
          for some cdma carriers -->
