@@ -913,8 +913,34 @@ public abstract class BaseStatusBar extends SystemUI implements
             appSettingsButton.setVisibility(View.GONE);
             filterButton.setVisibility(View.GONE);
             headsUpButton.setVisibility(View.GONE);
+<<<<<<< HEAD
+=======
         }
 
+    }
+
+    private void setHeadsUpButtonContentDescription(View v, boolean enabled) {
+        if (v == null) return;
+        if (enabled) {
+            v.setContentDescription(mContext.getString(
+                    R.string.notification_inspect_heads_up_title_disabled));
+        } else {
+            v.setContentDescription(mContext.getString(
+                    R.string.notification_inspect_heads_up_title_enabled));
+>>>>>>> eaede79... Frameworks: Slim heads up customizations for LP (1/2)
+        }
+    }
+
+    private boolean isThisASystemPackage(String packageName, PackageManager pm) {
+        try {
+            PackageInfo packageInfo = pm.getPackageInfo(packageName,
+                    PackageManager.GET_SIGNATURES);
+            PackageInfo sys = pm.getPackageInfo("android", PackageManager.GET_SIGNATURES);
+            return (packageInfo != null && packageInfo.signatures != null &&
+                    sys.signatures[0].equals(packageInfo.signatures[0]));
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
     }
 
     private void setHeadsUpButtonContentDescription(View v, boolean enabled) {
@@ -2148,7 +2174,10 @@ public abstract class BaseStatusBar extends SystemUI implements
                 || notification.vibrate != null;
         boolean isHighPriority = sbn.getScore() >= INTERRUPTION_THRESHOLD;
         boolean isFullscreen = notification.fullScreenIntent != null;
+<<<<<<< HEAD
       
+=======
+>>>>>>> eaede79... Frameworks: Slim heads up customizations for LP (1/2)
         int asHeadsUp = notification.extras.getInt(Notification.EXTRA_AS_HEADS_UP,
                 Notification.HEADS_UP_ALLOWED);
         boolean isAllowed = asHeadsUp != Notification.HEADS_UP_NEVER;

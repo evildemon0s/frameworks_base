@@ -441,6 +441,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.SCREEN_BRIGHTNESS_MODE), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
+<<<<<<< HEAD
                     Settings.System.ENABLE_NAVIGATION_RING), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.IMMERSIVE_ORIENTATION), false, this);
@@ -449,6 +450,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STATUS_BAR_GREETING), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
+=======
+>>>>>>> eaede79... Frameworks: Slim heads up customizations for LP (1/2)
                     Settings.System.HEADS_UP_NOTIFCATION_DECAY),
                     false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
@@ -3686,6 +3689,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                 stopNotificationLogging();
                 resetUserExpandedStates();
                 resetHeadsUpSnoozeTimer();
+
                 // detach gesture panel when screen is turned off
                 if (mGesturePanelView != null
                         && mGesturePanelView.isGesturePanelAttached()) removeGesturePanelView();             
