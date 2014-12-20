@@ -186,6 +186,11 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
     void updateRecentsTasks(Intent launchIntent) {
         // If AlternateRecentsComponent has preloaded a load plan, then use that to prevent
         // reconstructing the task stack
+
+        boolean mRecentsSearchbar = Settings.System.getInt(
+                getContentResolver(), Settings.System.RECENTS_SEARCH_BAR, 1) == 1;
+
+        // Load all the tasks
         RecentsTaskLoader loader = RecentsTaskLoader.getInstance();
         RecentsTaskLoadPlan plan = AlternateRecentsComponent.consumeInstanceLoadPlan();
         if (plan == null) {
@@ -256,7 +261,7 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
                        Settings.System.RECENTS_SHOW_SEARCH_BAR, 1) == 1;
             if (mRecentsView.hasSearchBar()) {
                 if (showSearchBar) {
-                    mRecentsView.setSearchBarVisibility(View.VISIBLE);
+                    mRecentsView.setSearchBarVisibility(mRecentsSearchbar ? View.VISIBLE : View.GONE);
                 } else {
                     mRecentsView.setSearchBarVisibility(View.GONE);
                 }
