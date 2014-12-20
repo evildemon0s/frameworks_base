@@ -199,6 +199,9 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
         mConfig.launchedWithAltTab = launchIntent.getBooleanExtra(
                 AlternateRecentsComponent.EXTRA_TRIGGERED_FROM_ALT_TAB, false);
 
+        boolean mRecentsSearchbar = Settings.System.getInt(
+                getContentResolver(), Settings.System.RECENTS_SEARCH_BAR, 1) == 1;
+
         // Load all the tasks
         RecentsTaskLoader loader = RecentsTaskLoader.getInstance();
         SpaceNode root = loader.reload(this,
@@ -256,7 +259,7 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
                        Settings.System.RECENTS_SHOW_SEARCH_BAR, 1) == 1;
             if (mRecentsView.hasSearchBar()) {
                 if (showSearchBar) {
-                    mRecentsView.setSearchBarVisibility(View.VISIBLE);
+                    mRecentsView.setSearchBarVisibility(mRecentsSearchbar ? View.VISIBLE : View.GONE);
                 } else {
                     mRecentsView.setSearchBarVisibility(View.GONE);
                 }
