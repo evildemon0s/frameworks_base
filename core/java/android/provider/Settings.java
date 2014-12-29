@@ -3413,6 +3413,33 @@ public final class Settings {
 
         /**
          * Locale for secondary overlay on dialer for t9 search input
+         * Whether to display the gesture anywhere trigger region or not.
+         * Used internally for showing the trigger in settings so user can see its placement
+         * @hide
+         */
+        @ChaosLab(name="GestureAnywhere", classification=Classification.NEW_FIELD)
+        public static final String GESTURE_ANYWHERE_SHOW_TRIGGER = "gesture_anywhere_show_trigger";
+        
+        /**  
+         * AOKP Custom System Animations
+         * @hide
+         */  
+        public static final String[] ACTIVITY_ANIMATION_CONTROLS = new String[] {  
+                "activity_open",
+                "activity_close",
+                "task_open",  
+                "task_close",  
+                "task_to_front",
+                "task_to_back",  
+                "wallpaper_open",  
+                "wallpaper_close",  
+                "wallpaper_intra_open",  
+                "wallpaper_intra_close",  
+        };  
+        public static final String ANIMATION_CONTROLS_DURATION = "animation_controls_duration";
+
+        /**
+         * Whether navigation bar is placed on the left side in landscape mode
          * @hide
          */
         public static final String T9_SEARCH_INPUT_LOCALE = "t9_search_input_locale";
