@@ -2107,7 +2107,7 @@ public final class Settings {
         /**
          * @hide
          */
-        public static final String SHOW_SU_ICON = "show_su_icon";
+        public static final String SHOW_SU_INDICATOR = "show_su_indicator";
 
         /**
          * Scaling factor for fonts, float.
