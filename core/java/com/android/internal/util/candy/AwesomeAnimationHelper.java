@@ -167,9 +167,6 @@ public class AwesomeAnimationHelper {
             case ANIMATION_GROW_SHRINK:
                 value = res.getString(com.android.internal.R.string.animation_grow_shrink);
                 break;
-            default:
-                value = res.getString(com.android.internal.R.string.action_null);
-                break;
 
         }
         return value;
