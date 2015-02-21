@@ -18,7 +18,6 @@
 <resources>
 
   <!-- AOKP custom system animations -->
-  <java-symbol type="string" name="action_null"/>
   <java-symbol type="string" name="animation_fade"/>
   <java-symbol type="string" name="animation_slide_left"/>
   <java-symbol type="string" name="animation_slide_right"/>
