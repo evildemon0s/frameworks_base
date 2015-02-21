@@ -3410,15 +3410,6 @@ public final class Settings {
          * @hide
          */
         public static final String NAVBAR_LEFT_IN_LANDSCAPE = "navigation_bar_left";
-
-        /**
-         * Locale for secondary overlay on dialer for t9 search input
-         * Whether to display the gesture anywhere trigger region or not.
-         * Used internally for showing the trigger in settings so user can see its placement
-         * @hide
-         */
-        @ChaosLab(name="GestureAnywhere", classification=Classification.NEW_FIELD)
-        public static final String GESTURE_ANYWHERE_SHOW_TRIGGER = "gesture_anywhere_show_trigger";
         
         /**  
          * AOKP Custom System Animations
