@@ -18,7 +18,6 @@
 package com.android.systemui.statusbar.phone;
 
 import android.animation.LayoutTransition;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -28,11 +27,6 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.database.ContentObserver;
-import android.net.Uri;
-import android.os.Handler;
-import android.provider.Settings;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.systemui.BatteryMeterView;
@@ -51,10 +45,6 @@ public class KeyguardStatusBarView extends RelativeLayout
     private boolean mKeyguardUserSwitcherShowing;
     private boolean mBatteryListening;
 
-    private boolean mShowBattreryPercent;
-    private boolean mShowCarrierLabel;
-
-    private LinearLayout mCarrierLabel;
     private View mSystemIconsSuperContainer;
     private MultiUserSwitch mMultiUserSwitch;
     private ImageView mMultiUserAvatar;
@@ -66,12 +56,8 @@ public class KeyguardStatusBarView extends RelativeLayout
     private int mSystemIconsSwitcherHiddenExpandedMargin;
     private Interpolator mFastOutSlowInInterpolator;
 
-    private Handler mHandler = new Handler();
-    private SettingsObserver mSettingsObserver;
-
     public KeyguardStatusBarView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mSettingsObserver = new SettingsObserver(mHandler);
     }
 
     @Override
@@ -80,7 +66,6 @@ public class KeyguardStatusBarView extends RelativeLayout
         mSystemIconsSuperContainer = findViewById(R.id.system_icons_super_container);
         mMultiUserSwitch = (MultiUserSwitch) findViewById(R.id.multi_user_switch);
         mMultiUserAvatar = (ImageView) findViewById(R.id.multi_user_avatar);
-        mCarrierLabel = (LinearLayout) findViewById(R.id.keyguard_carrier_text);
         mBatteryLevel = (BatteryLevelTextView) findViewById(R.id.battery_level_text);
         loadDimens();
         mFastOutSlowInInterpolator = AnimationUtils.loadInterpolator(getContext(),
@@ -104,7 +89,6 @@ public class KeyguardStatusBarView extends RelativeLayout
             removeView(mMultiUserSwitch);
         }
         mBatteryLevel.setVisibility(View.VISIBLE);
-        mCarrierLabel.setVisibility(mShowCarrierLabel ? View.VISIBLE : View.GONE);
     }
 
     private void updateSystemIconsLayoutParams() {
@@ -225,7 +209,6 @@ public class KeyguardStatusBarView extends RelativeLayout
     @Override
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
-        mSettingsObserver.observe();
         if (visibility != View.VISIBLE) {
             mSystemIconsSuperContainer.animate().cancel();
             mMultiUserSwitch.animate().cancel();
@@ -236,39 +219,5 @@ public class KeyguardStatusBarView extends RelativeLayout
     @Override
     public boolean hasOverlappingRendering() {
         return false;
-    }
-
-    class SettingsObserver extends ContentObserver {
-        SettingsObserver(Handler handler) {
-            super(handler);
-        }
-
-        void observe() {
-            ContentResolver resolver = mContext.getContentResolver();
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.LOCK_SCREEN_SHOW_BATTERY_PERCENT), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.LOCK_SCREEN_SHOW_CARRIER), false, this);
-            update();
-        }
-
-        @Override
-        public void onChange(boolean selfChange) {
-            update();
-        }
-
-        @Override
-        public void onChange(boolean selfChange, Uri uri) {
-            update();
-        }
-
-        public void update() {
-            ContentResolver resolver = mContext.getContentResolver();
-            mShowBattreryPercent = Settings.System.getInt(
-                    resolver, Settings.System.LOCK_SCREEN_SHOW_BATTERY_PERCENT, 0) != 0;
-            mShowCarrierLabel = Settings.System.getInt(
-                    resolver, Settings.System.LOCK_SCREEN_SHOW_CARRIER, 0) != 0;
-            updateVisibilities();
-        }
     }
 }
