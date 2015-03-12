@@ -37,12 +37,15 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
+import android.os.PowerManager;
+import android.os.SystemClock;
 import android.os.UserHandle;
 import android.provider.Settings;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.View;
@@ -125,6 +128,9 @@ public class NavigationBarView extends LinearLayout {
 
     private SettingsObserver mSettingsObserver;
     private boolean mShowDpadArrowKeys;
+    private boolean mDoubleTapSleep;
+
+    private GestureDetector mDoubleTapGesture;
 
     private class NavTransitionListener implements TransitionListener {
         private boolean mBackTransitioning;
@@ -221,6 +227,16 @@ public class NavigationBarView extends LinearLayout {
 
         mNavBarReceiver = new NavBarReceiver();
         mSettingsObserver = new SettingsObserver(new Handler());
+
+        mDoubleTapGesture = new GestureDetector(context,
+                new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onDoubleTap(MotionEvent motionEvent) {
+                PowerManager pm = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
+                if (pm != null) pm.goToSleep(SystemClock.uptimeMillis());
+                return true;
+            }
+        });
     }
 
     @Override
@@ -276,6 +292,9 @@ public class NavigationBarView extends LinearLayout {
         if (mDelegateHelper != null && mDelegateIntercepted) {
             boolean ret = mDelegateHelper.onInterceptTouchEvent(event);
             if (ret) return true;
+        }
+        if (mDoubleTapSleep) {
+            mDoubleTapGesture.onTouchEvent(event);
         }
         return super.onTouchEvent(event);
     }
@@ -883,6 +902,9 @@ public class NavigationBarView extends LinearLayout {
             resolver.registerContentObserver(
                     Settings.System.getUriFor(Settings.System.NAVIGATION_BAR_MENU_ARROW_KEYS),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(
+                    Settings.System.getUriFor(Settings.System.NAVIGATION_BAR_DOUBLE_TAP_SLEEP),
+                    false, this, UserHandle.USER_ALL);
 
             // intialize mModlockDisabled
             onChange(false);
@@ -896,8 +918,13 @@ public class NavigationBarView extends LinearLayout {
 
         @Override
         protected void update() {
-            mShowDpadArrowKeys = Settings.System.getIntForUser(mContext.getContentResolver(),
-                    Settings.System.NAVIGATION_BAR_MENU_ARROW_KEYS, 0, UserHandle.USER_CURRENT) != 0;
+            ContentResolver resolver = mContext.getContentResolver();
+            mDoubleTapSleep = Settings.System.getIntForUser(resolver,
+                    Settings.System.NAVIGATION_BAR_DOUBLE_TAP_SLEEP,
+                    0, UserHandle.USER_CURRENT) != 0;
+            mShowDpadArrowKeys = Settings.System.getIntForUser(resolver,
+                    Settings.System.NAVIGATION_BAR_MENU_ARROW_KEYS,
+                    0, UserHandle.USER_CURRENT) != 0;
             mSlotOneVisibility = -1;
             mSlotSixVisibility = -1;
             setNavigationIconHints(mNavigationIconHints, true);
