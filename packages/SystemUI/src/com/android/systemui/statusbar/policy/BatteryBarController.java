@@ -1,5 +1,5 @@
 package com.android.systemui.statusbar.policy;
-
+import com.android.systemui.statusbar.policy.Prefs;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
