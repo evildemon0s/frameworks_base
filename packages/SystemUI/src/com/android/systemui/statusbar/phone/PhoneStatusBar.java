@@ -449,6 +449,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         SettingsObserver(Handler handler) {
             super(handler);
         }
+       
 
         @Override
         protected void observe() {
@@ -467,12 +468,13 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             resolver.registerContentObserver(Settings.Secure.getUriFor(
                     Settings.Secure.RECENTS_LONG_PRESS_ACTIVITY), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.STATUS_BAR_TICKER_ENABLED),
+                    Settings.System.STATUS_BAR_TICKER_ENABLED),false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.BATTERY_SAVER_MODE_COLOR),
-                    false, this, UserHandle.USER_ALL);
-            update();
-        }
+                    Settings.System.BATTERY_SAVER_MODE_COLOR), false, this,
+                    UserHandle.USER_ALL);
+                          update();
+       }
+   
 
         @Override
         protected void unobserve() {
@@ -491,9 +493,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                              mContext.getResources().getBoolean(R.bool.enable_ticker)
                           ? 1 : 0, UserHandle.USER_CURRENT) == 1;
                   initTickerView();
-        @Override
-        public void onChange(boolean selfChange, Uri uri) {
-            if (uri.equals(Settings.System.getUriFor(
+			  }
+			if (uri.equals(Settings.System.getUriFor(
                     Settings.System.BATTERY_SAVER_MODE_COLOR))) {
                     mBatterySaverWarningColor = Settings.System.getIntForUser(
                             mContext.getContentResolver(),
@@ -506,6 +507,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             }
             update();
         }
+			 
+       
 
         @Override
         public void update() {
