@@ -74,8 +74,7 @@
                     android:visibility="gone"
                     />
 
-                <com.android.systemui.statusbar.StatusBarIconView 
-                    android:id="@+id/moreIcon"
+                <com.android.systemui.statusbar.StatusBarIconView android:id="@+id/moreIcon"
                     android:layout_width="@dimen/status_bar_icon_size"
                     android:layout_height="match_parent"
                     android:src="@drawable/stat_notify_more"
@@ -106,7 +105,7 @@
                 android:textColor="#ffffff"
                 android:textSize="@dimen/battery_level_text_size" />
 
-           
+            <TextView
             <com.android.systemui.statusbar.policy.NetworkTraffic
                 android:id="@+id/networkTraffic"
                 android:layout_width="wrap_content"
@@ -114,7 +113,7 @@
                 android:singleLine="false"
                 android:gravity="right|center_vertical"/>
 
-            <TextView
+            <com.android.systemui.statusbar.policy.Clock
                 android:id="@+id/clock"
                 android:textAppearance="@style/TextAppearance.StatusBar.Clock"
                 android:layout_width="wrap_content"

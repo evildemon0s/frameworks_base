@@ -3601,18 +3601,6 @@ public final class Settings {
          * @hide
          */
         public static final String T9_SEARCH_INPUT_LOCALE = "t9_search_input_locale";
-        
-         /**
-         * Whether or not to hide the network traffic indicator when there is no activity
-         * @hide
-         */
-        public static final String NETWORK_TRAFFIC_AUTOHIDE = "network_traffic_autohide";
-
-        /**
-         * Network traffic inactivity threshold (default is 10 kBs)
-         * @hide
-         */
-        public static final String NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD = "network_traffic_autohide_threshold";
 
         /**
          * Color temperature of the display during the day
@@ -3668,15 +3656,9 @@ public final class Settings {
          * 1 = Display down-stream traffic if set
          * 2 = Show as Byte/s if set
          * 16-31 = Refresh interval(ms) min: 250 max: 32750 default: 1000
-        */
-
-        public static final String NETWORK_TRAFFIC_STATE = "network_traffic_state";
-        
-        /**
-         * Network stats Color style
          * @hide
          */
-        public static final String NETWORK_TRAFFIC_COLOR = "network_traffic_color";
+        public static final String NETWORK_TRAFFIC_STATE = "network_traffic_state";
 
         /**
          * ListView Animations
