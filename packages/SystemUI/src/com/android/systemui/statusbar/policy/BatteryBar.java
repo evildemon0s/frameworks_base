@@ -20,15 +20,11 @@ import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-
-
-
 public class BatteryBar extends RelativeLayout implements Animatable {
 
     private static final String TAG = BatteryBar.class.getSimpleName();
 
-    // Total animation duration
-    private static final int ANIM_DURATION = 1000; // 5 seconds
+    private static final int ANIM_DURATION = 1000;
 
     private boolean mAttached = false;
     private int mBatteryLevel = 0;
@@ -37,7 +33,7 @@ public class BatteryBar extends RelativeLayout implements Animatable {
     private boolean shouldAnimateCharging = true;
     private boolean isAnimating = false;
 
-    private Handler mHandler = new Handler();
+    private SettingsObserver mSettingsObserver;
 
     LinearLayout mBatteryBarLayout;
     View mBatteryBar;
@@ -51,18 +47,15 @@ public class BatteryBar extends RelativeLayout implements Animatable {
     boolean vertical = false;
 
     class SettingsObserver extends ContentObserver {
-
         public SettingsObserver(Handler handler) {
             super(handler);
         }
 
-        void observer() {
+        void observe() {
             ContentResolver resolver = mContext.getContentResolver();
             resolver.registerContentObserver(
-                    Settings.System.getUriFor(Settings.System.STATUSBAR_BATTERY_BAR), false, this);
-            resolver.registerContentObserver(
-                    Settings.System.getUriFor(Settings.System.STATUSBAR_BATTERY_BAR_COLOR), false,
-                    this);
+                    Settings.System.getUriFor(Settings.System.STATUSBAR_BATTERY_BAR_COLOR),
+                    false, this);
             resolver.registerContentObserver(
                     Settings.System.getUriFor(Settings.System.STATUSBAR_BATTERY_BAR_ANIMATE),
                     false, this);
@@ -80,14 +73,12 @@ public class BatteryBar extends RelativeLayout implements Animatable {
 
     public BatteryBar(Context context, boolean isCharging, int currentCharge) {
         this(context, null);
-
         mBatteryLevel = currentCharge;
         mBatteryCharging = isCharging;
     }
 
     public BatteryBar(Context context, boolean isCharging, int currentCharge, boolean isVertical) {
         this(context, null);
-
         mBatteryLevel = currentCharge;
         mBatteryCharging = isCharging;
         vertical = isVertical;
@@ -119,15 +110,15 @@ public class BatteryBar extends RelativeLayout implements Animatable {
             float dp = 4f;
             int pixels = (int) (metrics.density * dp + 0.5f);
 
-            // charger
             mChargerLayout = new LinearLayout(mContext);
 
-            if (vertical)
+            if (vertical) {
                 addView(mChargerLayout, new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT,
                         pixels));
-            else
+            } else {
                 addView(mChargerLayout, new RelativeLayout.LayoutParams(pixels,
                         LayoutParams.MATCH_PARENT));
+            }
 
             mCharger = new View(mContext);
             mChargerLayout.setVisibility(View.GONE);
@@ -140,8 +131,8 @@ public class BatteryBar extends RelativeLayout implements Animatable {
             filter.addAction(Intent.ACTION_SCREEN_ON);
             getContext().registerReceiver(mIntentReceiver, filter, null, getHandler());
 
-            SettingsObserver observer = new SettingsObserver(mHandler);
-            observer.observer();
+            mSettingsObserver = new SettingsObserver(new Handler());
+            mSettingsObserver.observe();
             updateSettings();
         }
     }
@@ -152,6 +143,7 @@ public class BatteryBar extends RelativeLayout implements Animatable {
         if (mAttached) {
             mAttached = false;
             getContext().unregisterReceiver(mIntentReceiver);
+            getContext().getContentResolver().unregisterContentObserver(mSettingsObserver);
         }
     }
 
@@ -194,7 +186,6 @@ public class BatteryBar extends RelativeLayout implements Animatable {
             stop();
         }
         setProgress(mBatteryLevel);
-
         mBatteryBar.setBackgroundColor(color);
         mCharger.setBackgroundColor(color);
     }
@@ -206,7 +197,6 @@ public class BatteryBar extends RelativeLayout implements Animatable {
                     .getLayoutParams();
             params.height = w;
             mBatteryBarLayout.setLayoutParams(params);
-
         } else {
             int w = (int) (((getWidth() / 100.0) * n) + 0.5);
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mBatteryBarLayout
@@ -214,13 +204,13 @@ public class BatteryBar extends RelativeLayout implements Animatable {
             params.width = w;
             mBatteryBarLayout.setLayoutParams(params);
         }
-
     }
 
     @Override
     public void start() {
-        if (!shouldAnimateCharging)
+        if (!shouldAnimateCharging) {
             return;
+        }
 
         if (vertical) {
             TranslateAnimation a = new TranslateAnimation(getX(), getX(), getHeight(),
@@ -253,5 +243,4 @@ public class BatteryBar extends RelativeLayout implements Animatable {
     public boolean isRunning() {
         return isAnimating;
     }
-
 }
