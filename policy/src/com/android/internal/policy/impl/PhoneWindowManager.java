@@ -1426,15 +1426,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         mHandler.removeCallbacks(mScreenrecordRunnable);
     }
 
-
-    private final Runnable mGlobalMenu = new Runnable() {
-        @Override
-        public void run() {
-            sendCloseSystemWindows(SYSTEM_DIALOG_REASON_GLOBAL_ACTIONS);
-            showGlobalActionsInternal(false);
-        }
-    };
-
     private final Runnable mEndCallLongPress = new Runnable() {
         @Override
         public void run() {
