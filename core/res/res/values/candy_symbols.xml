@@ -61,5 +61,8 @@
   
   <!-- Config IME switcher -->
   <java-symbol type="bool" name="config_show_IMESwitcher" />
+  
+  <!-- Ambient Display-->
+  <java-symbol type="bool" name="config_dozeUseAccelerometer" />
 
 </resources>
