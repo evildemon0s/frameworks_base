@@ -3,6 +3,7 @@
 /* apps/common/assets/default/default/skins/StatusBar.xml
 **
 ** Copyright 2011, The Android Open Source Project
+** Copyright 2014, VanirAOSP && The Android Open Source Project
 **
 ** Licensed under the Apache License, Version 2.0 (the "License"); 
 ** you may not use this file except in compliance with the License. 
@@ -31,6 +32,7 @@
         android:layout_width="match_parent"
         >
 
+
         <RelativeLayout
             android:layout_height="match_parent"
             android:layout_width="match_parent">
@@ -50,75 +52,26 @@
                 android:layout_alignParentBottom="true" />
 
         </RelativeLayout>
-
+        
+        <!-- layout for custom navbar -->
         <LinearLayout
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:clipChildren="false"
             android:clipToPadding="false"
-            android:id="@+id/container"
-            >
-
-            <include layout="@layout/mid_navigation_bar_port"/>
-
-        </LinearLayout>
+            android:id="@+id/nav_buttons"
+            android:animateLayoutChanges="true"
+            />
 
         <!-- lights out layout to match exactly -->
         <LinearLayout
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:orientation="horizontal"
-            android:gravity="center_horizontal"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
-            android:layout_gravity="center_horizontal"
             android:id="@+id/lights_out"
             android:visibility="gone"
-            >
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_sysbar_lights_out_dot_large"
-                android:scaleType="center"
-                />
-            <View
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:visibility="invisible"
-                />
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_sysbar_lights_out_dot_large"
-                android:scaleType="center"
-                />
-            <View
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:visibility="invisible"
-                />
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_sysbar_lights_out_dot_large"
-                android:scaleType="center"
-                />
-            <View
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:visibility="invisible"
-                android:layout_weight="1"
-                />
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_sysbar_lights_out_dot_large"
-                android:scaleType="center"
-                />
-        </LinearLayout>
+            />
 
         <com.android.systemui.statusbar.policy.DeadZone
             android:id="@+id/deadzone"
@@ -140,76 +93,26 @@
         android:paddingTop="0dp"
         >
 
+        <!-- layout for custom navbar -->
         <LinearLayout 
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:orientation="vertical"
-            android:gravity="center_vertical"
-            android:layout_gravity="center_vertical"
             android:clipChildren="false"
             android:clipToPadding="false"
-            android:id="@+id/container"
-            >
-
-            <include layout="@layout/mid_navigation_bar_land"/>
-
-        </LinearLayout>
+            android:id="@+id/nav_buttons"
+            android:animateLayoutChanges="true"
+            />
 
         <!-- lights out layout to match exactly -->
         <LinearLayout 
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:orientation="vertical"
-            android:gravity="center_vertical"
-            android:layout_gravity="center_vertical"
-            android:layout_marginTop="40dp"
-            android:layout_marginBottom="40dp"
             android:id="@+id/lights_out"
             android:visibility="gone"
-            >
-            <ImageView
-                android:layout_height="80dp"
-                android:layout_width="match_parent"
-                android:src="@drawable/ic_sysbar_lights_out_dot_large"
-                android:scaleType="center"
-                />
-            <View
-                android:layout_height="0dp"
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:visibility="invisible"
-                />
-            <ImageView
-                android:layout_height="80dp"
-                android:layout_width="match_parent"
-                android:src="@drawable/ic_sysbar_lights_out_dot_large"
-                android:scaleType="center"
-                />
-            <View
-                android:layout_height="0dp"
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:visibility="invisible"
-                />
-            <ImageView
-                android:layout_height="80dp"
-                android:layout_width="match_parent"
-                android:src="@drawable/ic_sysbar_lights_out_dot_large"
-                android:scaleType="center"
-                />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:visibility="invisible"
-                android:layout_weight="1"
-                />
-            <ImageView
-                android:layout_height="80dp"
-                android:layout_width="match_parent"
-                android:src="@drawable/ic_sysbar_lights_out_dot_large"
-                android:scaleType="center"
-                />
-        </LinearLayout>
+            />
+
 
         <com.android.systemui.statusbar.policy.DeadZone
             android:id="@+id/deadzone"
@@ -223,5 +126,13 @@
             android:layout_gravity="top"
             />
     </FrameLayout>
+
+    <!-- not used -->
+    <View
+        android:id="@+id/rot270"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        />
 
 </com.android.systemui.statusbar.phone.NavigationBarView>

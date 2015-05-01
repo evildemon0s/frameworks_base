@@ -30,6 +30,7 @@ oneway interface IStatusBar
     void animateExpandNotificationsPanel();
     void animateExpandSettingsPanel();
     void animateCollapsePanels();
+    void animateNotificationsOrSettingsPanel();
     void setSystemUiVisibility(int vis, int mask);
     void topAppWindowChanged(boolean menuVisible);
     void setImeWindowStatus(in IBinder token, int vis, int backDisposition,
@@ -47,5 +48,6 @@ oneway interface IStatusBar
     void showScreenPinningRequest();
     void showCustomIntentAfterKeyguard(inout Intent intent);
     void setAutoRotate(boolean enabled);
+    void notifyLayoutChange(int direction);
 }
 
