@@ -1418,6 +1418,10 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         return ViewConfiguration.getGlobalActionKeyTimeout();
     }
 
+    private void cancelPendingScreenshotChordAction() {
+        mHandler.removeCallbacks(mScreenshotRunnable);
+    }
+
     private void cancelPendingScreenrecordChordAction() {
         mHandler.removeCallbacks(mScreenrecordRunnable);
     }
