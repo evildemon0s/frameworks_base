@@ -3724,10 +3724,10 @@
       has violated its self-enforced StrictMode policy.</string>
 
     <!-- [CHAR LIMIT=40] Title of dialog that is shown when performing a system upgrade. -->
-    <string name="android_upgrading_title">Candy5 is upgrading\u2026</string>
+    <string name="android_upgrading_title">Candy5 is\u2026</string>
 
     <!-- [CHAR LIMIT=40] Title of dialog that is shown when system is starting. -->
-    <string name="android_start_title">Candy5 is starting\u2026</string>
+    <string name="android_start_title">Candy5 is\u2026</string>
 
     <!-- [CHAR LIMIT=NONE] Message shown in upgrading dialog when doing an fstrim. -->
     <string name="android_upgrading_fstrim">Optimizing storage.</string>
@@ -3738,10 +3738,10 @@
         <xliff:g id="number" example="123">%2$d</xliff:g>.</string>
 
     <!-- [CHAR LIMIT=NONE] Message to show in upgrading dialog when reached the point of starting apps. -->
-    <string name="android_upgrading_starting_apps">Opening The CandyShop</string>
+    <string name="android_upgrading_starting_apps">Starting Up!!!</string>
 
     <!-- [CHAR LIMIT=NONE] Message to show in upgrading dialog when the bulk of the upgrade work is done. -->
-    <string name="android_upgrading_complete">Welcome to the CandyShop</string>
+    <string name="android_upgrading_complete">Yours to Discover!!!</string>
 
     <!-- Notification text to tell the user that a heavy-weight application is running. -->
     <string name="heavy_weight_notification"><xliff:g id="app">%1$s</xliff:g> running</string>
