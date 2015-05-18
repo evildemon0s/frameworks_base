@@ -407,6 +407,7 @@ public class DozeService extends DreamService implements ProximitySensorManager.
     }
 
     private void listenForSignalsSensor(boolean listen) {
+        if (mProximitySensorManager == null) return;
         if (listen && mDozeParameters.getFullMode()) {
             mProximitySensorManager.enable();
         } else {
@@ -419,9 +420,11 @@ public class DozeService extends DreamService implements ProximitySensorManager.
     private void listenForHalfMode(boolean listen) {
         if (!mUseAccelerometer || mDozeParameters.getFullMode()) return;
         if (listen && mDozeParameters.getHalfMode()) {
-            mProximitySensorManager.enable();
+            if (mProximitySensorManager != null)
+                mProximitySensorManager.enable();
         } else {
-            mProximitySensorManager.disable(true);
+            if (mProximitySensorManager != null)
+                mProximitySensorManager.disable(true);
         }
     }
 
