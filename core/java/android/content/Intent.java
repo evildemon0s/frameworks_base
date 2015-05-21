@@ -3636,8 +3636,7 @@ public class Intent implements Parcelable, Cloneable {
      * app in foreground when recents was long pressed. Can be reused for other purposes.
      * @hide
      */
-    public static final String EXTRA_CURRENT_PACKAGE_NAME =
-            "com.cyanogenmod.intent.extra.CURRENT_PACKAGE_NAME";
+    public static final String EXTRA_CURRENT_PACKAGE_NAME = "com.cyanogenmod.intent.extra.CURRENT_PACKAGE_NAME";
 
     // ---------------------------------------------------------------------
     // ---------------------------------------------------------------------
