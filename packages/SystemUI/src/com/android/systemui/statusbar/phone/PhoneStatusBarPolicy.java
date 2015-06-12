@@ -411,6 +411,10 @@ public class PhoneStatusBarPolicy {
         mService.setIconVisibility(SLOT_CAST, isCasting);
     }
 
+    private void updateSu() {
+        mService.setIconVisibility(SLOT_SU, mSuIconVisible && mSuController.hasActiveSessions());
+    }
+
     private final HotspotController.Callback mHotspotCallback = new HotspotController.Callback() {
         @Override
         public void onHotspotChanged(boolean enabled) {
@@ -424,10 +428,6 @@ public class PhoneStatusBarPolicy {
             updateCast();
         }
     };
-
-    private void updateSu() {
-        mService.setIconVisibility(SLOT_SU, mSuController.hasActiveSessions());
-    }
 
     private final SuController.Callback mSuCallback = new SuController.Callback() {
         @Override
