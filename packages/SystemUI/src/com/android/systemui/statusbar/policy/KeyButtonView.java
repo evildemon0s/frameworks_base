@@ -58,6 +58,7 @@ import java.util.ArrayList;
 
 import com.android.internal.statusbar.IStatusBarService;
 import com.android.internal.util.vanir.KeyButtonInfo;
+import com.android.internal.util.vanir.NavbarConstants;
 import com.android.internal.util.vanir.NavbarUtils;
 import com.android.internal.util.vanir.VanirActions;
 import com.android.systemui.R;
@@ -203,12 +204,13 @@ public class KeyButtonView extends ImageView {
                 setImageDrawable(new BitmapDrawable(res, f.getAbsolutePath()));
             }
         } else if (mHasSingleAction) {
+                NavbarConstants.useSystemUI = false;
             setImageDrawable(NavbarUtils.getIconImage(mContext, mActions.singleAction));
         } else {
             setImageResource(R.drawable.ic_sysbar_null);
         }
     }
-
+  
     @Override
     public Resources getResources() {
         ThemeConfig themeConfig = mContext.getResources().getConfiguration().themeConfig;
