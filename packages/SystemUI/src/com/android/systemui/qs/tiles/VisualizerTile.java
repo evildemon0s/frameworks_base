@@ -71,6 +71,8 @@ public class VisualizerTile extends QSTile<QSTile.State> implements KeyguardMoni
             if (PowerManager.ACTION_POWER_SAVE_MODE_CHANGING.equals(intent.getAction())) {
                 mPowerSaveModeEnabled = intent.getBooleanExtra(PowerManager.EXTRA_POWER_SAVE_MODE,
                         false);
+                        
+                checkIfPlaying(null);
                 if (mPowerSaveModeEnabled) {
                     AsyncTask.execute(mUnlinkVisualizer);
                 } else {
@@ -199,6 +201,28 @@ public class VisualizerTile extends QSTile<QSTile.State> implements KeyguardMoni
         mContext.unregisterReceiver(mReceiver);
     }
 
+    private void checkIfPlaying(PlaybackState newState) {
+        boolean anythingPlaying = newState == null
+                ? mIsAnythingPlaying
+                : newState.getState() == PlaybackState.STATE_PLAYING;
+        if (!mPowerSaveModeEnabled && !anythingPlaying) {
+            for (Map.Entry<MediaSession.Token, CallbackInfo> entry : mCallbacks.entrySet()) {
+                if (entry.getValue().isPlaying()) {
+                    anythingPlaying = true;
+                    break;
+                }
+            }
+        }
+
+        if (anythingPlaying != mIsAnythingPlaying) {
+            mIsAnythingPlaying = anythingPlaying;
+            doLinkage();
+
+            mHandler.removeCallbacks(mRefreshStateRunnable);
+            mHandler.postDelayed(mRefreshStateRunnable, 50);
+        }
+    }
+
     @Override
     public void onKeyguardChanged() {
         doLinkage();
@@ -272,6 +296,46 @@ public class VisualizerTile extends QSTile<QSTile.State> implements KeyguardMoni
             }
         }
     };
+
+    private class CallbackInfo {
+        MediaController.Callback mCallback;
+        MediaController mController;
+        boolean mIsPlaying;
+
+        public CallbackInfo(final MediaController controller) {
+            this.mController = controller;
+            mCallback = new MediaController.Callback() {
+                @Override
+                public void onSessionDestroyed() {
+                    destroy();
+                    checkIfPlaying(null);
+                }
+
+                @Override
+                public void onPlaybackStateChanged(@NonNull PlaybackState state) {
+                    mIsPlaying = state.getState() == PlaybackState.STATE_PLAYING;
+                    checkIfPlaying(state);
+                }
+            };
+            controller.registerCallback(mCallback);
+        }
+
+        public boolean isPlaying() {
+            return mIsPlaying;
+        }
+
+        public void unregister() {
+            mController.unregisterCallback(mCallback);
+            mIsPlaying = false;
+        }
+
+        public void destroy() {
+            unregister();
+            mCallbacks.remove(mController.getSessionToken());
+            mController = null;
+            mCallback = null;
+        }
+    }
 
     private static class TileBarGraphRenderer extends Renderer {
         private int mDivisions;
